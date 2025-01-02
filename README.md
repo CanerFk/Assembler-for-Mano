@@ -62,7 +62,21 @@ mvn clean package
 ```bash
 java -jar target/mano-1.0-SNAPSHOT.jar
 ```
+## Download link for ready jar file
+[Download .jar File](https://sourceforge.net/projects/assemblerformano/)
 
+To run this JAR file, you'll need to have JDK (Java Development Kit) installed on your computer. Here's how to do it:
+
+Install JDK
+Make sure you have JDK installed. You can download it from the official website:
+
+- [Download JDK from Oracle](https://www.oracle.com/java/technologies/javase-downloads.html)
+
+- Alternatively, you can use [AdoptOpenJDK](https://adoptopenjdk.net/) for an open-source version.
+
+JDK includes the Java Runtime Environment (JRE), so you don't need to install JRE separately.
 ## Credits
 
-Developed by CanerFk
+Developed by CanerFk 
+
+2024
