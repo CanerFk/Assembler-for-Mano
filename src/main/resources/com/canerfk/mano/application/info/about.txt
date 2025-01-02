@@ -1,0 +1,12 @@
+Mano Basic Computer Assembler
+        Developed by: CanerFK
+        Date: 24.12.2024
+
+        This assembler implements the instruction set of the
+        Mano Basic Computer as described in "Computer System
+        Architecture" by M. Morris Mano.
+
+        Features:
+        - Two-pass assembly
+        - Symbol table management
+        - Machine code generation

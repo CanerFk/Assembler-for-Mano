@@ -1,0 +1,41 @@
+MEMORY REFERENCE INSTRUCTIONS
+-----------------------------
+    		I = 0       I = 1	
+    AND x    | [0xxx]    | [8xxx]    |	AND memory word to AC
+    ADD x    | [0xxx]    | [9xxx]    |	Add memory word to AC
+    LDA x    | [2xxx]    | [Axxx]    |	Load memory word to AC
+    STA x    | [3xxx]    | [Bxxx]    |	Store AC to memory
+    BUN x    | [4xxx]    | [Cxxx]    |	Branch unconditionally
+    BSA x    | [5xxx]    | [Dxxx]    |	Branch and save return address
+    ISZ x    | [6xxx]    | [Exxx]    |	Increment and skip if zero
+
+REGISTER REFERENCE INSTRUCTIONS
+-------------------------------
+    CLA      | [7800]    | Clear AC
+    CLE      | [7400]    | Clear E
+    CMA      | [7200]    | Complement AC
+    CME      | [7100]    | Complement E
+    CIR      | [7080]    | Circulate right AC and E
+    CIL      | [7040]    | Circulate left AC and E
+    INC      | [7020]    | Increment AC
+    SPA      | [7010]    | Skip if AC positive
+    SNA      | [7008]    | Skip if AC negative
+    SZA      | [7004]    | Skip if AC zero
+    SZE      | [7002]    | Skip if E is 0
+    HLT      | [7001]    | Halt computer
+
+INPUT-OUTPUT INSTRUCTIONS
+-------------------------
+    INP      | [F800]    | Input character to AC
+    OUT      | [F400]    | Output character from AC
+    SKI      | [F200]    | Skip on input flag
+    SKO      | [F100]    | Skip on output flag
+    ION      | [F080]    | Interrupt on
+    IOF      | [F040]    | Interrupt off
+
+PSEUDO-OPERATIONS
+-----------------
+    ORG n    : Set origin to location n
+    END      : End of symbolic program
+    DEC n    : Decimal number n
+    HEX n    : Hexadecimal number n

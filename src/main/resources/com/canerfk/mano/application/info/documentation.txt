@@ -1,0 +1,241 @@
+        MANO ASSEMBLY LANGUAGE GUIDE
+        ==========================
+        A Comprehensive Guide to Mano Assembly Language Programming
+
+        1. INTRODUCTION TO THE MANO COMPUTER
+        -----------------------------------
+        The Mano Computer, designed for educational purposes, is a simplified digital computer model. It is used to teach fundamental concepts in computer organization and assembly language programming. Understanding its structure and functionality lays a strong foundation for learning modern computer architectures.
+
+        Key Features:
+        - **Word Size:** 16 bits (each instruction or data item is 16 bits wide).
+        - **Memory Capacity:** 4K words (4096 memory locations, addressable from `000` to `FFF` in hexadecimal).
+        - **Instruction Set:** A minimal set of instructions designed for ease of learning while covering essential operations.
+        - **Accumulator (AC):** The primary register used for arithmetic and data manipulation.
+        - **Program Counter (PC):** Holds the address of the next instruction to execute.
+        - **Instruction Register (IR):** Temporarily stores the current instruction being executed.
+        - **Temporary Register (TR):** Used for intermediate calculations and data transfers.
+
+        Functional Units:
+        - **Memory:** Divided into locations, each capable of holding 16 bits of data or instructions.
+        - **Control Unit:** Interprets instructions and manages the flow of data within the system.
+        - **Arithmetic Logic Unit (ALU):** Performs arithmetic and logical operations.
+        - **Input/Output (I/O) Devices:** Interface for communication with external devices.
+
+        Instruction Execution:
+        - Each instruction goes through three main phases:
+            1. **Fetch:** The instruction is fetched from memory using the address in the PC.
+            2. **Decode:** The Control Unit decodes the instruction to determine the operation and operand(s).
+            3. **Execute:** The specified operation is performed.
+
+        2. BASIC SYNTAX AND STRUCTURE
+        ----------------------------
+        Mano assembly language uses a simple and structured format to make programs easy to read and write. The general syntax for an instruction is:
+
+            [label,] instruction [operand] [;comment]
+
+        Explanation of Components:
+        - **Label:** An optional identifier for a memory location or instruction. Labels make programs easier to understand and are followed by a comma (e.g., `LOOP,`).
+        - **Instruction:** Specifies the operation to perform (e.g., `LDA`, `ADD`, `STA`).
+        - **Operand:** Specifies the data or memory address involved in the operation. Some instructions do not require operands.
+        - **Comment:** Optional remarks for clarification, starting with a semicolon (`;`).
+
+        Rules:
+        - Labels must be unique within the program.
+        - Labels can contain alphanumeric characters but must begin with a letter.
+        - Comments are ignored by the assembler and can appear anywhere on a line.
+
+        Example:
+            START, LDA NUM    ; Load the value from NUM into the Accumulator
+                  ADD ONE     ; Add ONE to the Accumulator
+                  STA RESULT  ; Store the result in RESULT
+
+        Assembly Directives:
+        - **ORG:** Specifies the starting address for the program or data. Example: `ORG 100`
+        - **END:** Marks the end of the program. Example: `END`
+        - **DEC:** Defines a variable in decimal format. Example: `VAR, DEC 10`
+        - **HEX:** Defines a variable in hexadecimal format. Example: `FLAG, HEX F`
+
+        3. MEMORY AND ADDRESSING
+        -----------------------
+        Understanding how memory is structured and accessed is crucial for effective programming on the Mano Computer.
+
+        Memory:
+        - Divided into 4K (4096) locations, each holding 16 bits.
+        - Address range: `000` to `FFF` (hexadecimal).
+        - Memory is used to store both data and instructions.
+
+        Addressing Modes:
+        - **Direct Addressing:**
+          - The operand specifies the memory address directly.
+          - Example: `LDA NUM` loads the value from memory location labeled `NUM`.
+
+        - **Indirect Addressing:**
+          - The operand specifies a memory address that contains the actual address of the data.
+          - Indicated by the suffix `I`. Example: `LDA NUM I` loads data from the address stored in `NUM`.
+
+        Example of Addressing:
+            ORG 100          ; Start at address 100
+            LDA VALUE        ; Direct addressing: Load value from VALUE
+            ADD POINTER I    ; Indirect addressing: Add value from address stored in POINTER
+            STA RESULT       ; Store the result in RESULT
+            HLT              ; Stop execution
+            VALUE, DEC 15    ; VALUE = 15
+            POINTER, HEX 200 ; POINTER points to memory location 200
+            RESULT, DEC 0    ; Placeholder for result
+
+        4. INSTRUCTION SET OVERVIEW
+        ---------------------------
+        The instruction set is designed to be minimal yet functional, covering all basic operations needed for computation.
+
+        Common Instructions:
+        - **LDA:** Load the value from memory into the AC.
+        - **STA:** Store the value of the AC into memory.
+        - **ADD:** Add the value from memory to the AC.
+        - **SUB:** Subtract the value from memory from the AC.
+        - **SZA:** Skip the next instruction if the AC is zero.
+        - **HLT:** Halt program execution.
+
+        Instruction Format:
+        - A 16-bit binary word:
+          - Opcode (4 bits): Specifies the operation (e.g., `LDA`, `ADD`).
+          - Address (12 bits): Specifies the memory location for the operation.
+
+        Example:
+            Binary representation of `LDA 100`:
+            Opcode: 0001 (LDA)
+            Address: 0100 (100 in hex)
+
+
+        5. CONTROL FLOW AND BRANCHING
+        ----------------------------
+        Control flow allows programs to make decisions and execute different instructions based on specific conditions. This is essential for implementing loops, conditional execution, and program organization.
+
+        Conditional Branching Instructions:
+        - **SZA (Skip if Zero in AC):**
+          - Skips the next instruction if the Accumulator (AC) contains zero.
+          - Example:
+                LDA VALUE      ; Load VALUE into AC
+                SZA            ; Skip next if AC is zero
+                BUN NONZERO    ; Branch to NONZERO if not skipped
+
+        - **BUN (Branch Unconditionally):**
+          - Changes the program counter (PC) to the specified address.
+          - Often used for implementing loops or jumping to subroutines.
+          - Example:
+                BUN LOOP       ; Jump to label LOOP
+
+        - **BSA (Branch and Save Address):**
+          - Used for subroutine calls. Saves the return address in memory.
+          - Execution flow returns to the next instruction after the subroutine ends with `ISZ`.
+          - Example:
+                BSA SUBROUTINE ; Call SUBROUTINE
+                HLT            ; Halt after subroutine execution
+
+        Implementing Loops:
+        - Loops are commonly implemented using `BUN` for unconditional jumps combined with conditional instructions like `ISZ` (Increment and Skip if Zero).
+        - Example:
+            LOOP,   LDA COUNT      ; Load loop counter
+                    SZA            ; Exit loop if counter is zero
+                    BUN ENDLOOP    ; Branch to end if zero
+                    ...            ; Loop body
+                    ISZ COUNT      ; Decrement counter
+                    BUN LOOP       ; Repeat loop
+            ENDLOOP, HLT           ; Halt program
+
+        6. SUBROUTINES AND STACKS
+        ------------------------
+        Subroutines allow you to modularize code by encapsulating reusable functionality.
+
+        Calling a Subroutine:
+        - Use the `BSA` (Branch and Save Address) instruction to call a subroutine.
+        - The return address is saved in memory, allowing the subroutine to return to the calling program.
+
+        Returning from a Subroutine:
+        - Use `ISZ` to increment the saved return address and return control to the caller.
+        - Example:
+            MAIN,   BSA SUBROUTINE ; Call SUBROUTINE
+                    HLT            ; End program
+            SUBROUTINE, ...        ; Subroutine body
+                       ISZ SUBRETURN ; Return to caller
+                       BUN SUBRETURN ; Resume main program
+            SUBRETURN, DEC 0       ; Placeholder for return address
+
+        Simulating a Stack:
+        - While the Mano Computer does not have a hardware stack, a memory-based stack can be implemented using indirect addressing.
+        - Example:
+            STACKBASE, HEX 200     ; Stack starts at location 200
+            SP,        HEX 200     ; Stack pointer initialized
+
+            PUSH,   STA SP I        ; Store AC at stack pointer location
+                    ISZ SP          ; Increment stack pointer
+                    BUN RETURN      ; Return from PUSH
+
+            POP,    ISZ SP          ; Decrement stack pointer
+                    LDA SP I        ; Load value from stack
+                    BUN RETURN      ; Return from POP
+
+        7. ERROR MESSAGES AND DEBUGGING
+        ------------------------------
+        The assembler and Mano Computer runtime provide error messages to help diagnose issues.
+
+        Common Error Messages:
+        - **"Symbol already exists":**
+          - Cause: Duplicate label definition.
+          - Solution: Ensure all labels in the program are unique.
+
+        - **"Symbol not found":**
+          - Cause: Referencing an undefined label.
+          - Solution: Verify that all labels used in the program are defined.
+
+        - **"Invalid mnemonic":**
+          - Cause: Typo in instruction or unsupported operation.
+          - Solution: Use only valid mnemonics from the Mano instruction set.
+
+        - **"Address out of range":**
+          - Cause: Specified address exceeds memory limits (`000` to `FFF`).
+          - Solution: Ensure all memory addresses are within the valid range.
+
+        Debugging Techniques:
+        1. Use comments to document the purpose of each instruction.
+        2. Break the program into smaller sections and test them individually.
+        3. Use `HLT` to pause execution and inspect the state of registers and memory.
+        4. Simulate the program step by step to verify each operation.
+
+        Example of Debugging:
+        - Problem: A loop does not terminate as expected.
+        - Debugging Steps:
+          1. Check the initialization of the loop counter.
+          2. Verify the decrement and conditional branch logic.
+          3. Inspect the values in memory and registers during execution.
+
+        8. TIPS AND BEST PRACTICES
+        ------------------------
+        Effective Mano programming involves following best practices to ensure clarity, correctness, and maintainability.
+
+        Best Practices:
+        - **Meaningful Labels:**
+          - Use descriptive labels to make code easier to read.
+          - Example: Use `LOOP_COUNTER` instead of `X`.
+
+        - **Consistent Formatting:**
+          - Align labels, instructions, and comments for better readability.
+          - Example:
+                START,   LDA VALUE     ; Load VALUE into AC
+                         ADD ONE       ; Add ONE to AC
+                         STA RESULT    ; Store result in RESULT
+
+        - **Extensive Comments:**
+          - Document the purpose of each section of the code.
+          - Example:
+                ; This section initializes the counter for the loop
+                LDA COUNT
+
+        - **Logical Organization:**
+          - Separate data definitions, subroutines, and main program logic.
+          - Example:
+                ORG 100
+                MAIN,   ...
+                END
+
+                ORG 200
+                DATA,   DEC 0

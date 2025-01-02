@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            fx:controller="com.canerfk.mano.application.AssemblerController">
+
+    <top>
+        <VBox spacing="5">
+            <MenuBar fx:id="menuBar">
+                <Menu fx:id="menu_file" text="%menu.file">
+                    <MenuItem fx:id="menu_file_new" text="%menu.file.new" onAction="#newFile"/>
+                    <MenuItem fx:id="menu_file_open" text="%menu.file.open" onAction="#openFile"/>
+                    <MenuItem fx:id="menu_file_save" text="%menu.file.save" onAction="#saveFile"/>
+                    <MenuItem fx:id="menu_file_exit" text="%menu.file.exit" onAction="#exitApplication"/>
+                </Menu>
+                <Menu fx:id="menu_language" text="%menu.language">
+                    <MenuItem fx:id="language_english" text="English" onAction="#setEnglish"/>
+                    <MenuItem fx:id="language_turkish" text="Türkçe" onAction="#setTurkish"/>
+                </Menu>
+                <Menu fx:id="menu_help" text="%menu.help">
+                    <MenuItem fx:id="menu_help_instructions" text="%menu.help.instructions" onAction="#showInstructionSet"/>
+                    <MenuItem fx:id="menu_help_documentation" text="%menu.help.documentation" onAction="#showDocumentation"/>
+                    <MenuItem fx:id="menu_help_about" text="%menu.help.about" onAction="#showAbout"/>
+                </Menu>
+            </MenuBar>
+            <ToolBar>
+                <Button fx:id="button_new" text="%button.new" onAction="#newFile">
+                    <tooltip>
+                        <Tooltip fx:id="tooltip_newFile" text="%tooltip.button.new"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="button_open" text="%button.open" onAction="#openFile">
+                    <tooltip>
+                        <Tooltip fx:id="tooltip_openFile" text="%tooltip.button.open"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="button_save" text="%button.save" onAction="#saveFile">
+                    <tooltip>
+                        <Tooltip fx:id="tooltip_saveFile" text="%tooltip.button.save"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="button_assemble" text="%button.assemble" onAction="#assembleCode" styleClass="assemble-button">
+                    <tooltip>
+                        <Tooltip fx:id="tooltip_assemble" text="%tooltip.button.assemble"/>
+                    </tooltip>
+                </Button>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="button_savehex" text="%button.savehex" onAction="#saveHex">
+                    <tooltip>
+                        <Tooltip fx:id="tooltip_savehex" text="%tooltip.button.savehex"/>
+                    </tooltip>
+                </Button>
+            </ToolBar>
+        </VBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.6">
+            <VBox spacing="5">
+                <padding>
+                    <Insets top="5" right="5" bottom="5" left="5"/>
+                </padding>
+
+                <Label fx:id="label_assemblyCode" text="%label.assemblyCode"/>
+                <StackPane fx:id="codeAreaContainer" VBox.vgrow="ALWAYS"/>
+            </VBox>
+
+            <VBox>
+                <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE">
+                    <Tab fx:id="tab_machineCode" text="%label.machineCode">
+                        <VBox spacing="5">
+                            <padding>
+                                <Insets top="5" right="5" bottom="5" left="5"/>
+                            </padding>
+
+                            <TableView fx:id="machineCodeTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="column_address" text="%column.address" prefWidth="100"/>
+                                    <TableColumn fx:id="column_hex" text="%column.hex" prefWidth="100"/>
+                                    <TableColumn fx:id="column_binary" text="%column.binary" prefWidth="200"/>
+                                </columns>
+                                <tooltip>
+                                    <Tooltip fx:id="tooltip_machineCodeTable" text="%tooltip.machineCodeTable"/>
+                                </tooltip>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <Tab fx:id="tab_symbolTable" text="%label.symbolTable">
+                        <VBox spacing="5">
+                            <padding>
+                                <Insets top="5" right="5" bottom="5" left="5"/>
+                            </padding>
+
+                            <TableView fx:id="symbolTableView" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="column_symbol" text="%column.symbol" prefWidth="150"/>
+                                    <TableColumn fx:id="column_symAddress" text="%column.address" prefWidth="100"/>
+                                </columns>
+                                <tooltip>
+                                    <Tooltip fx:id="tooltip_symbolTable" text="%tooltip.symbolTableView"/>
+                                </tooltip>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+                </TabPane>
+            </VBox>
+        </SplitPane>
+    </center>
+
+    <bottom>
+        <VBox>
+            <TextArea fx:id="errorArea"
+                      prefHeight="100"
+                      editable="false"
+                      styleClass="error-area"
+                      wrapText="true">
+                <tooltip>
+                    <Tooltip fx:id="tooltip_errorArea" text="%tooltip.errorArea"/>
+                </tooltip>
+            </TextArea>
+
+            <HBox spacing="10" styleClass="status-bar">
+                <padding>
+                    <Insets top="5" right="5" bottom="5" left="5"/>
+                </padding>
+
+                <Label fx:id="label_status_label" text="%label.status_label"/>
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>
